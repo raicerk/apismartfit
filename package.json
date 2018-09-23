@@ -1,0 +1,17 @@
+{
+  "name": "apismartfit",
+  "version": "1.0.0",
+  "description": "API para aplicacion movil smartfit",
+  "main": "main.js",
+  "scripts": {
+    "test": "test main.js"
+  },
+  "keywords": [
+    "API",
+    "nodejs",
+    "express",
+    "request"
+  ],
+  "author": "Juan Mora",
+  "license": "MIT"
+}
