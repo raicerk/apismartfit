@@ -1,11 +1,12 @@
 const request = require('postman-request');
+const cheerio = require('cheerio');
 
 exports.login = async function (rut,contrasena){
     return new Promise((resolve, reject)=>{
         var options = {
             "uri": "https://www.smartfit.cl/person_sessions",
             "method": "POST",
-            //"followAllRedirects": true,
+            "followAllRedirects": true,
             "form": {
                 'utf8': '✓',
                 'authenticity_token': 'ySjkHot+4GXJjRQCuy7dRBrzv7IeUu/r6HqDwZCRgSgCwMiRyGvhwRm39wzHM29VETowprHUnSTc8eN4JiTURw==',
@@ -23,14 +24,21 @@ exports.login = async function (rut,contrasena){
         };
     
         function callback(error, response, body) {
-            if(response.statusCode == 302){
-                resolve(true)
+            
+            $ = cheerio.load(body);
+
+            if(response.request.uri.href == "https://www.smartfit.cl/client_space/messages"){
+                resolve({
+                    exito : true,
+                    nombre : $('.clienteMenu a').text().trim(),
+                    sucursal : $('.toggle-list .grid-12 p').eq(0).html(),
+                    pagos : $('.toggle-list .grid-12').eq(1).find('b').html(),
+                    plan : $('.person-info div span').attr('class') == 'balaoPlanoBlack' ? 'Black' : 'Normal'
+                })
             }else{
                 resolve(false)
             }
             
-            console.log(body);
-
             if(error){
                 reject(false)
             }

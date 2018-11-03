@@ -5,9 +5,7 @@ exports.Login = async function (req, res) {
 
     login.login(req.body.rut, req.body.contrasena).then(response=>{
         if(response){
-            res.status(200).json({
-                exito : response
-            })
+            res.status(200).json(response)
         }else{
             res.status(200).json({
                 exito: false
